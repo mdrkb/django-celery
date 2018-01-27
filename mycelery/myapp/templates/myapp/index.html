@@ -4,9 +4,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 
-<body>
+<body style="text-align: center;">
 <h1>Generate Random Users</h1>
-<progress id="progress-bar" value="0" max="100" style="display:none;"></progress>
+<progress id="progress-bar" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>
 <form id="generate-user-form" action="/generate-user/" method="post">
     {% csrf_token %}
     {{ form }}
@@ -44,7 +44,7 @@
                     frm.html('Please wait...');
                 }
                 else if (data.state == 'PROGRESS' || data.state == 'SUCCESS') {
-                    pgrbar.css('display', 'block');
+                    pgrbar.css('display', 'inline');
                     pgrbar.val(data.result.percent);
                     frm.html('User created ' + data.result.current + ' out of ' + data.result.total);
                 }
