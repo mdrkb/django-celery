@@ -1,0 +1,65 @@
+<html>
+<head>
+    <title>Celery Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+<h1>Generate Random Users</h1>
+<progress id="progress-bar" value="0" max="100" style="display:none;"></progress>
+<form id="generate-user-form" action="/generate-user/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit"/>
+</form>
+
+<script type="text/javascript">
+    var frm = $('#generate-user-form');
+    var pgrbar = $('#progress-bar');
+    frm.submit(function () {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (data) {
+                if (data.task_id != null) {
+                    get_task_info(data.task_id);
+                }
+            },
+            error: function (data) {
+                console.log("Something went wrong!");
+            }
+        });
+        return false;
+    });
+
+    function get_task_info(task_id) {
+        $.ajax({
+            type: 'get',
+            url: '/get-task-info/',
+            data: {'task_id': task_id},
+            success: function (data) {
+                frm.html('');
+                if (data.state == 'PENDING') {
+                    frm.html('Please wait...');
+                }
+                else if (data.state == 'PROGRESS' || data.state == 'SUCCESS') {
+                    pgrbar.css('display', 'block');
+                    pgrbar.val(data.result.percent);
+                    frm.html('User created ' + data.result.current + ' out of ' + data.result.total);
+                }
+                if (data.state != 'SUCCESS') {
+                    setTimeout(function () {
+                        get_task_info(task_id)
+                    }, 1000);
+                }
+            },
+            error: function (data) {
+                frm.html("Something went wrong!");
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
