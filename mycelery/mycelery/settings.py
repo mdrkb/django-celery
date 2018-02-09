@@ -24,7 +24,7 @@ SECRET_KEY = 'gchvizw3e#n_&v=0#6u=ji#=g-_^__z9!p_e@2%5!c@_=nj&!f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results',
     'myapp',
 ]
 
@@ -115,8 +114,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-BROKER_URL = 'amqp://rakib:123456@localhost:5672/rakibhost'
+CELERY_BROKER_URL = 'amqp://rakib:123456@localhost:5672/rakibhost'
+CELERY_RESULT_BACKEND = 'amqp://rakib:123456@localhost:5672/rakibhost'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'django-db'

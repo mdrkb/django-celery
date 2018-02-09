@@ -7,7 +7,6 @@ from django.conf import settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mycelery.settings')
 
 app = Celery('mycelery')
-# app = Celery('mycelery', backend=settings.CELERY_RESULT_BACKEND, broker=settings.BROKER_URL)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
